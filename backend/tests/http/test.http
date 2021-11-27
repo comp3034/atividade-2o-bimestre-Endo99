@@ -69,7 +69,7 @@ Content-Type: application/json
 
 
 ###
-PUT http://127.0.0.1:8000/users/8
+PUT http://127.0.0.1:8000/users/
 Content-Type: application/json
 
 {
