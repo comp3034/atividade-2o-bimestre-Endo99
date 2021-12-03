@@ -48,11 +48,11 @@ def delete_user(db: Session, user_id: int):
     user = get_user(db, user_id)
     if user is None:
         raise HTTPException(status_code=404, detail="Usuário não encontrado")
-    
+
     db.delete(user)
     db.commit()
     db.refresh(user)
-    return user
+    return f"delete status: sucess, User with ID: {user_id} deleted"
 
 def get_measures(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Measure).offset(skip).limit(limit).all()
