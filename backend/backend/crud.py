@@ -1,3 +1,5 @@
+from typing import Generator
+from fastapi.exceptions import HTTPException
 from pydantic.errors import SetError
 from sqlalchemy.orm import Session
 from . import models, schemas
@@ -42,12 +44,85 @@ def edit_user(db: Session, user_id: int, new_value: schemas.UserEdit):
     db.refresh(db_user)
     return db_user
 
+def delete_user(db: Session, user_id: int):
+    user = get_user(db, user_id)
+    if user is None:
+        raise HTTPException(status_code=404, detail="Usuário não encontrado")
+    
+    db.delete(user)
+    db.commit()
+    db.refresh(user)
+    return user
+
 def get_measures(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Measure).offset(skip).limit(limit).all()
 
 def create_user_measure(db: Session, measure: schemas.MeasureCreate, user_id: int):
-    db_measure = models.Measure(**measure.dict(), owner_id=user_id)
+    db_measure = models.Measure(height=measure.height,
+                                weight=measure.weight,
+                                neck=measure.neck,
+                                chest=measure.chest,
+                                biceps=measure.biceps,
+                                hips=measure.hips,
+                                waist=measure.waist,
+                                thigs=measure.thighs,
+                                calf=measure.calf,
+                                owner_id=user_id)
     db.add(db_measure)
     db.commit()
     db.refresh(db_measure)
     return db_measure
+
+def edit_measures(db: Session, user_id: int, new_value: schemas.MeasuresEdit):
+    db_measure = db.query(models.User).filter(models.User.id == user_id).first() # get user by id
+    if db_measure: # if id exist
+        if new_value.name != None: # Change if not null
+            db.query(models.User).filter(models.User.id == user_id).\
+                update({"height": new_value.name})
+        
+        if new_value.name != None: # Change if not null
+            db.query(models.User).filter(models.User.id == user_id).\
+                update({"weight": new_value.name})
+
+        if new_value.name != None: # Change if not null
+            db.query(models.User).filter(models.User.id == user_id).\
+                update({"neck": new_value.name})
+
+        if new_value.name != None: # Change if not null
+            db.query(models.User).filter(models.User.id == user_id).\
+                update({"chest": new_value.name})
+
+        if new_value.name != None: # Change if not null
+            db.query(models.User).filter(models.User.id == user_id).\
+                update({"biceps": new_value.name})
+
+        if new_value.name != None: # Change if not null
+            db.query(models.User).filter(models.User.id == user_id).\
+                update({"hips": new_value.name})
+
+        if new_value.name != None: # Change if not null
+            db.query(models.User).filter(models.User.id == user_id).\
+                update({"waist": new_value.name})
+
+        if new_value.name != None: # Change if not null
+            db.query(models.User).filter(models.User.id == user_id).\
+                update({"thighs": new_value.name})
+
+        if new_value.name != None: # Change if not null
+            db.query(models.User).filter(models.User.id == user_id).\
+                update({"calf": new_value.name})
+        
+
+    db.commit()
+    db.refresh(db_measure)
+    return db_measure
+
+def delete_measures(db: Session, measure: schemas.MeasureCreate, user_id: int) -> bool:
+    db_measure = models.Measure(**measure.dict(), owner_id=user_id)
+    if db_measure:
+        db.delete(measure)
+        db.commit()
+        db.refresh(db_measure)
+        return True
+
+    return False

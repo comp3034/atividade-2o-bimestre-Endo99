@@ -33,15 +33,23 @@ GET http://127.0.0.1:8082/users/
 
 
 ###
-GET http://127.0.0.1:8082/users/1
+GET http://127.0.0.1:8082/users/4
 
 
 ###
-PUT http://127.0.0.1:8082/users/1
+POST http://127.0.0.1:8082/users/measures/2
 Content-Type: application/json
 
 {
-    
+    "height": "168"
+    "weight": "66"
+    "neck": "50"
+    "chest": "50"
+    "biceps": "50"
+    "hips": "50"
+    "waist": "50"
+    "thighs": "50"
+    "calf": "50"
 }
 
 
@@ -53,12 +61,39 @@ Content-Type: application/json
 
 
 ###
-POST http://127.0.0.1:8000/users
+POST http://127.0.0.1:8082/users
 Content-Type: application/json
 
 {
     "name": "Ricardo Silva",
-    "email": "ricardo.silva@email.com"
+    "email": "ricardo.silva@email.com",
+    "password": "RicSil321"
+}
+
+
+###
+GET http://127.0.0.1:8082/users/1
+
+###
+POST http://127.0.0.1:8082/users
+Content-Type: application/json
+
+{
+    "name": "Wellington Joji Endo",
+    "email": "wellington.endo@email.com",
+    "password": "Well1345",
+    "birth_date": "1999-08-11T16:36:01.793Z"
+}
+
+###
+PATCH http://127.0.0.1:8082/users/2
+Content-Type: application/json
+
+{
+    "name": "Wellington Joji Endo",
+    "email": "wellington.endo@email.com",
+    "password": "Well1345",
+    "birth_date": "1999-08-11T16:36:01.793Z"
 }
 
 
@@ -67,9 +102,8 @@ Content-Type: application/json
 
 
 
-
 ###
-PUT http://127.0.0.1:8000/users/
+PUT http://127.0.0.1:8082/users/
 Content-Type: application/json
 
 {
@@ -77,5 +111,13 @@ Content-Type: application/json
     "price": 1
 }
 
+###
+GET http://127.0.0.1:8082/measures/
+
+
+###
+GET http://127.0.0.1:8082/users/measures/1
+
+
 ### 
-DELETE http://127.0.0.1:8000/users/8
+DELETE http://127.0.0.1:8082/users/1/delete
