@@ -15,7 +15,15 @@ class MeasureBase(BaseModel):
     
 
 class MeasureCreate(MeasureBase):
-    pass
+    height: Optional[int]
+    weight: Optional[int]
+    neck: Optional[int]
+    chest: Optional[int]
+    biceps: Optional[int]
+    hips: Optional[int]
+    waist: Optional[int]
+    thighs: Optional[int]
+    calf: Optional[int]
 
 
 class Measure(MeasureBase):
@@ -24,6 +32,17 @@ class Measure(MeasureBase):
 
     class Config:
         orm_mode = True
+
+class MeasuresEdit(MeasureBase):
+    height: Optional[int]
+    weight: Optional[int]
+    neck: Optional[int]
+    chest: Optional[int]
+    biceps: Optional[int]
+    hips: Optional[int]
+    waist: Optional[int]
+    thighs: Optional[int]
+    calf: Optional[int]
 
 
 class UserBase(BaseModel):
@@ -42,3 +61,6 @@ class User(UserBase):
 
     class Config:
         orm_mode = True
+
+class UserEdit(UserBase):
+    birth_date: Optional[datetime]

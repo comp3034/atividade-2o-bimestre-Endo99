@@ -18,6 +18,7 @@ def get_db():
     finally:
         db.close()
 
+### USER
 @app.post("/users/", response_model=schemas.User)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db_user = crud.get_user_by_email(db, email=user.email)
@@ -32,3 +33,66 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     users = crud.get_users(db, skip=skip, limit=limit)
     return users
+
+# User info
+@app.get("/users/{user_id}", response_model=schemas.User)
+def find_user(user_id: int, db: Session = Depends(get_db)):
+    return crud.get_user(db, user_id)
+
+# EDIT USER
+@app.put("/users/{user_id}", response_model=schemas.User)
+async def edit_user(user_id: int, new_value: schemas.UserEdit, db: Session = Depends(get_db)):
+    db_user = crud.get_user(db, user_id)
+    if db_user:
+        return crud.edit_user(db, user_id, new_value=new_value)
+    
+    raise HTTPException(status_code=400, detail="Usuário inexistente")
+
+
+@app.patch("/users/{user_id}", response_model=schemas.User)
+async def edit_user(user_id: int, new_value: schemas.UserEdit, db: Session = Depends(get_db)):
+    db_user = crud.get_user(db, user_id)
+    if db_user:
+        return crud.edit_user(db, user_id, new_value=new_value)
+    
+    raise HTTPException(status_code=400, detail="Usuário inexistente")
+
+@app.delete("/users/{user_id}/delete", response_model=schemas.User)
+async def delete_user(user_id: int, db: Session = Depends(get_db)) -> None:
+    deleted = crud.delete_user(db, user_id)
+    if not deleted:
+        raise HTTPException(status_code=404, detail="Usuário não encontrado")
+    return f"Usuário que possuia o id: {user_id}, foi deletado com êxito!"
+    
+# Measure
+@app.get("/measures/", response_model=List[schemas.Measure])
+def read_measures(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    users = crud.get_measures(db, skip=skip, limit=limit)
+    return users
+
+
+@app.post("/users/measures/{user_id}", response_model=schemas.Measure)
+def create_measure(user_id: int, measure: schemas.MeasureCreate, db: Session = Depends(get_db)):
+    db_user = crud.get_user(db, user_id)
+    if db_user:
+        return crud.create_user_measure(db, measure, user_id)
+
+    raise HTTPException(status_code=400, detail="Usuário inexistente")
+
+
+@app.get("/users/measures/{user_id}", response_model=List[schemas.Measure])
+def get_user_measure(user_id: int, db: Session = Depends(get_db)):
+    db_user = crud.get_user(db, user_id)
+    if db_user:
+        return crud.get_user_measure(db, user_id)
+
+    raise HTTPException(status_code=400, detail="Usuário inexistente")
+
+@app.put("/users/measures/{user_id}", response_model=schemas.Measure)
+async def edit_measures(user_id: int, new_value: schemas.MeasuresEdit, db: Session = Depends(get_db)):
+    db_user = crud.get_measures(db, user_id)
+    if db_user:
+        return crud.edit_measures(db, user_id, new_value=new_value)
+    
+    raise HTTPException(status_code=400, detail="Usuário inexistente")
+

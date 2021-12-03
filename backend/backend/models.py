@@ -15,7 +15,7 @@ class User(Base):
     is_active = Column(Boolean, default=True)
     birth_date = Column(DateTime, nullable=True)
 
-    measures = relationship("Measure", back_populates="user")
+    measures = relationship("Measure", back_populates="user", cascade="delete")
 
 
 class Measure(Base):
@@ -33,4 +33,4 @@ class Measure(Base):
     calf = Column(Integer, default=0)
     user_id = Column(Integer, ForeignKey("users.id"))
 
-    user = relationship("User", back_populates="measures")
+    user = relationship("User", back_populates="measures", cascade="delete")
