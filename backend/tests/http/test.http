@@ -37,18 +37,18 @@ GET http://127.0.0.1:8082/users/4
 
 
 ###
-POST http://127.0.0.1:8082/users/measures/2
+POST http://127.0.0.1:8082/users/measures/5
 Content-Type: application/json
 
 {
-    "height": "168"
-    "weight": "66"
-    "neck": "50"
-    "chest": "50"
-    "biceps": "50"
-    "hips": "50"
-    "waist": "50"
-    "thighs": "50"
+    "height": "168",
+    "weight": "66",
+    "neck": "50",
+    "chest": "50",
+    "biceps": "50",
+    "hips": "50",
+    "waist": "50",
+    "thighs": "50",
     "calf": "50"
 }
 
@@ -72,7 +72,7 @@ Content-Type: application/json
 
 
 ###
-GET http://127.0.0.1:8082/users/1
+GET http://127.0.0.1:8082/users
 
 ###
 POST http://127.0.0.1:8082/users/

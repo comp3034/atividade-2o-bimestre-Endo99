@@ -56,13 +56,6 @@ async def edit_user(user_id: int, new_value: schemas.UserEdit, db: Session = Dep
         return crud.edit_user(db, user_id, new_value=new_value)
     
     raise HTTPException(status_code=400, detail="Usuário inexistente")
-
-@app.delete("/users/{user_id}/delete", response_model=schemas.User)
-async def delete_user(user_id: int, db: Session = Depends(get_db)) -> None:
-    deleted = crud.delete_user(db, user_id)
-    if not deleted:
-        raise HTTPException(status_code=404, detail="Usuário não encontrado")
-    return f"Usuário que possuia o id: {user_id}, foi deletado com êxito!"
     
 # Measure
 @app.get("/measures/", response_model=List[schemas.Measure])
